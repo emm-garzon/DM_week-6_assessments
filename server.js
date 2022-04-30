@@ -11,6 +11,7 @@ app.use(express.json());
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public/index.html"));
+  rollbar.info("HTML file served successfully");
 });
 
 // app.get("/styles", (req, res) => {
@@ -31,7 +32,7 @@ app.get("/api/robots", (req, res) => {
   try {
     res.status(200).send(botsArr);
   } catch (error) {
-    console.log("ERROR GETTING BOTS", error);
+    rollbar.error("ERROR GETTING BOTS", error);
     res.sendStatus(400);
   }
 });
@@ -43,7 +44,7 @@ app.get("/api/robots/five", (req, res) => {
     let compDuo = shuffled.slice(6, 8);
     res.status(200).send({ choices, compDuo });
   } catch (error) {
-    console.log("ERROR GETTING FIVE BOTS", error);
+    rollbar.critical("ERROR GETTING FIVE BOTS", error);
     res.sendStatus(400);
   }
 });
@@ -82,7 +83,7 @@ app.post("/api/duel", (req, res) => {
       res.status(200).send("You won!");
     }
   } catch (error) {
-    console.log("ERROR DUELING", error);
+    rollbar.error("ERROR DUELING", error);
     res.sendStatus(400);
   }
 });
@@ -91,7 +92,7 @@ app.get("/api/player", (req, res) => {
   try {
     res.status(200).send(playerRecord);
   } catch (error) {
-    console.log("ERROR GETTING PLAYER STATS", error);
+    rollbar.warning("ERROR GETTING PLAYER STATS", error);
     res.sendStatus(400);
   }
 });
